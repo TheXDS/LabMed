@@ -1,0 +1,35 @@
+﻿<Page x:Class="CoreContable.UI.Components.NewPartidaPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="500"
+      Title="Nueva partida">
+
+    <DockPanel Margin="10">
+        <Grid DockPanel.Dock="Top">
+
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <StackPanel 
+                Orientation="Horizontal">
+                <Button 
+                    x:Name="btnAdd"
+                    Content="+"
+                    Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+                <Button 
+                    x:Name="btnRemove"
+                    Content="-"
+                    Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+            </StackPanel>            
+        </Grid>
+        <ListView>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</Page>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="CoreContable.UI.Dialogs.CuentaSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mcart="clr-namespace:MCART.Controls;assembly=MCART"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Seleccionar cuenta" Height="300" Width="300" Closing="Window_Closing" WindowStyle="ToolWindow">
+    <Window.Resources>
+        <system:Double x:Key="btnW">75</system:Double>
+    </Window.Resources>
+    <DockPanel>
+        <mcart:SearchBox x:Name="txtSearch" DockPanel.Dock="Top" Margin="10" SearchEntered="SearchEntered" SearchClosed="txtSearch_SearchClosed"/>
+        <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+            <Button x:Name="btnOk" Content="Aceptar" Margin="10" Width="{StaticResource btnW}" Click="BtnOk_Click"/>
+            <Button x:Name="btnCancel" Content="Cancelar" Margin="10" Width="{StaticResource btnW}" Click="BtnCancel_Click"/>
+        </WrapPanel>
+        <TreeView x:Name ="trvCuentas" Margin="10,0"/>
+    </DockPanel>
+</Window>

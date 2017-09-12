@@ -1,0 +1,44 @@
+﻿<Page x:Class="CoreContable.UI.Components.StartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:system ="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="Menú principal">
+    <Page.Resources>
+        <Thickness x:Key="thk">5</Thickness>
+        <system:Double x:Key="btnW">140</system:Double>
+    </Page.Resources>
+    <StackPanel>
+        <TextBlock Text="Inicio" FontFamily="Calibri Light" FontSize="36" Margin="10"/>
+        <Separator/>
+        <ScrollViewer HorizontalAlignment="Center" VerticalScrollBarVisibility="Auto">
+            <WrapPanel>
+                <StackPanel
+                    x:Name="pnlModules"
+                    Width="{StaticResource btnW}">
+                    <TextBlock Text="Módulos" Margin="10"/>
+                </StackPanel>
+                <StackPanel Width="{StaticResource btnW}">
+                    <TextBlock Text="Opciones generales" Margin="10"/>
+                    <Button 
+                        x:Name="btnLibroDiario"
+                        Content="Libro diario"
+                        Margin="{StaticResource thk}"                       
+                        Click="BtnLibroDiario_Click"/>
+                    <Button
+                        x:Name="btnReportes"
+                        Content="Reportes"
+                        Margin="{StaticResource thk}"/>
+                    <Button
+                        x:Name="btnOpciones"
+                        Content="Preferencias..."
+                        Margin="{StaticResource thk}"/>
+                </StackPanel>
+            </WrapPanel>
+
+        </ScrollViewer>
+    </StackPanel>
+</Page>
