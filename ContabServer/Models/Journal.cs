@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -10,7 +10,7 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-namespace CoreContable.Entities
+namespace ContabServer.Models
 {
     public class Journal
     {

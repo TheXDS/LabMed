@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -11,12 +11,12 @@ cualquier parte de su contenido.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
-using static CoreContable.Logic.Commands;
+using static ContabServer.Logic.Commands;
 
-namespace CoreContable.Entities
+namespace ContabServer.Models
 {
     /// <summary>
     /// Representa el modelo de la base de datos de contabilidad.
@@ -24,15 +24,53 @@ namespace CoreContable.Entities
     public class ContabContext : DbContext
     {
         /// <summary>
+        /// Realiza tareas de configuración al inicializar este
+        /// <see cref="DbContext"/>.
+        /// </summary>
+        /// <param name="optionsBuilder">
+        /// Objeto utilizado para configurar este <see cref="DbContext"/>.
+        /// </param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+#if DEBUG_NPSQL
+            // Conector de PostgreSQL
+
+            const string Usr = "root";
+            const string Pwd = "TrustN@12543156";
+            const string Host = "thexds-srv1";
+            const ushort Port = 5432;
+            const string Database = "LabMedConta";
+            optionsBuilder.UseNpgsql($"User ID={Usr};Password={Pwd};Host={Host};Port={Port};Database={Database};Pooling=true;");
+#endif
+#if DEBUG_LOCAL
+            // FIXME: Por alguna razón, SQL LocalDB no permite iniciar sesión.
+            // Conector de SQL Server LocalDB
+
+            const string Server = @"(localdb)\mssqllocaldb";
+            const string Database = "LabMedConta";
+            optionsBuilder.UseSqlServer($"Server={Server};Database={Database};Trusted_Connection=True;Integrated security=True;");
+#endif
+#if RELEASE_TEST
+            // TODO: configurar el servidor alternativo de prueba
+            throw new System.NotImplementedException();
+#endif
+#if RELEASE
+            // TODO: configurar el servidor de producción
+            throw new System.NotImplementedException();
+#endif
+        }
+
+        /// <summary>
         /// Inicializa una nueva instancia de la clase 
         /// <see cref="ContabContext"/>.
         /// </summary>
-        public ContabContext() : base("LabMed.Conta")
+        public ContabContext()
         {
-            if (!Database.Exists() || Categorias.Count() < 3) Task.WaitAll(InitialSetupAsync(this));
-            Activo = Categorias.Find(1);
-            Pasivo = Categorias.Find(2);
-            Capital = Categorias.Find(3);
+            Database.EnsureDeleted();
+            if (Database.EnsureCreated() || Categorias.Count() < 3) Task.WaitAll(InitialSetupAsync(this));
+            Activo = Categorias.Find(1L);
+            Pasivo = Categorias.Find(2L);
+            Capital = Categorias.Find(3L);
         }
 
         /// <summary>
@@ -68,5 +106,13 @@ namespace CoreContable.Entities
         /// Tabla que contiene las definiciones de grupos de cuentas.
         /// </summary>
         public DbSet<CuentaGroup> CuentaGroups { get; set; }
+
+        #region Tablas relacionales
+        /// <summary>
+        /// Tabla de relación N a N entre <see cref="Cuenta"/> y
+        /// <see cref="CuentaGroup"/>.
+        /// </summary>
+        public DbSet<Cuenta_CuentaGroup_N2N> N2N_Cuenta_CuentaGroup { get; set; }
+        #endregion
     }
 }

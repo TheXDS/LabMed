@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -10,11 +10,11 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using CoreContable.Entities;
+using ContabServer.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace CoreContable.Logic
+namespace ContabServer.Logic
 {
     public static class Commands
     {
@@ -23,7 +23,8 @@ namespace CoreContable.Logic
         /// </summary>
         internal static async Task InitialSetupAsync(ContabContext db)
         {
-            db.Database.Initialize(true);
+            await db.Database.EnsureDeletedAsync();
+            await db.Database.EnsureCreatedAsync();
             await db.DoTransact(() =>
             {
                 /* Estas categorías se crean manualmente ya que son las
@@ -37,9 +38,9 @@ namespace CoreContable.Logic
 
         public static async Task AddCategoria(this ContabContext db, string nombre, Categoria parent, int prefix)
         {
-            if (ReferenceEquals(db, null)) throw new ArgumentNullException(nameof(db));
+            if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
-            if (ReferenceEquals(parent, null)) throw new ArgumentNullException(nameof(parent));
+            if (parent is null) throw new ArgumentNullException(nameof(parent));
             if (prefix < 1) throw new ArgumentOutOfRangeException(nameof(prefix));
             await db.DoTransact(() =>
             {
@@ -49,31 +50,38 @@ namespace CoreContable.Logic
 
         public static async Task AddCuenta(this ContabContext db, string nombre, Categoria parent, int prefix, params CuentaGroup[] memberOf)
         {
-            if (ReferenceEquals(db, null)) throw new ArgumentNullException(nameof(db));
+            if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
-            if (ReferenceEquals(parent, null)) throw new ArgumentNullException(nameof(parent));
+            if (parent is null) throw new ArgumentNullException(nameof(parent));
             if (prefix < 1) throw new ArgumentOutOfRangeException(nameof(prefix));
             await db.DoTransact(() =>
             {
                 Cuenta cuenta = new Cuenta { DisplayName = nombre, Prefix = prefix };
-                foreach (var j in memberOf) cuenta.MemberOf.Add(j);
+                foreach (var j in memberOf)
+                {
+                    db.N2N_Cuenta_CuentaGroup.Add(new Cuenta_CuentaGroup_N2N
+                    {
+                        CuentaID = cuenta,
+                        CuentaGroupID = j
+                    });                    
+                }
                 parent.Cuentas.Add(cuenta);
             });
         }
 
         public static async Task AddCuentaGroup(this ContabContext db, string nombre)
         {
-            if (ReferenceEquals(db, null)) throw new ArgumentNullException(nameof(db));
+            if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
             await db.DoTransact(() =>
             {
-                db.CuentaGroups.Add(new CuentaGroup { Name = nombre });
+                db.CuentaGroups.Add(new CuentaGroup { DisplayName = nombre });
             });
         }
         
         public static async Task AddPartida(this ContabContext db, string synopsys, params Movimiento[] movimientos)
         {
-            if (ReferenceEquals(db, null)) throw new ArgumentNullException(nameof(db));
+            if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(synopsys)) throw new ArgumentNullException(nameof(synopsys));
             await db.DoTransact(() =>
             {

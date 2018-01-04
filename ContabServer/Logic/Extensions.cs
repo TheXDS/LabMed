@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -11,10 +11,11 @@ cualquier parte de su contenido.
 */
 
 using System;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
-namespace CoreContable.Logic
+namespace ContabServer.Logic
 {
     /// <summary>
     /// Extensiones genéricas especiales para objetos <see cref="DbContext"/>.
@@ -32,7 +33,7 @@ namespace CoreContable.Logic
         /// Un <see cref="DbContextTransaction"/> que representa la transacción
         /// obtenida.
         /// </returns>
-        public static DbContextTransaction GetTransaction(this DbContext db) => db.Database.CurrentTransaction ?? db.Database.BeginTransaction();
+        public static IDbContextTransaction GetTransaction(this DbContext db) => db.Database.CurrentTransaction ?? db.Database.BeginTransaction();
         /// <summary>
         /// Permite utilizar una transacción, ya sea una existente o una nueva,
         /// e indica si fue creada.
@@ -50,9 +51,9 @@ namespace CoreContable.Logic
         /// Un <see cref="DbContextTransaction"/> que representa la transacción
         /// obtenida.
         /// </returns>
-        public static DbContextTransaction GetTransaction(this DbContext db, out bool IsNew)
+        public static IDbContextTransaction GetTransaction(this DbContext db, out bool IsNew)
         {
-            if (ReferenceEquals(db.Database.CurrentTransaction, null))
+            if (db.Database.CurrentTransaction is null)
             {
                 IsNew = true;
                 return db.Database.BeginTransaction();
@@ -97,8 +98,8 @@ namespace CoreContable.Logic
         /// ejecute.
         /// </returns>
         public static async Task DoTransact(this DbContext Db, Task action)
-        {
-            DbContextTransaction tr = Db.GetTransaction(out bool isNew);
+        {            
+            var tr = Db.GetTransaction(out bool isNew);
             try
             {
                 action.Start();

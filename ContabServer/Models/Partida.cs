@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreContable.Entities
+namespace ContabServer.Models
 {
     /// <summary>
     /// Componente escencial del libro diario. Describe una operación contable.

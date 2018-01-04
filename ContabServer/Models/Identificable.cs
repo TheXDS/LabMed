@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -10,24 +10,24 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-namespace CoreContable.Entities
+using System.ComponentModel.DataAnnotations;
+
+namespace ContabServer.Models
 {
     /// <summary>
-    /// Representa un movimiento o cambio a una cuenta dentro de una partida.
+    /// Clase abstracta que permite compartir la definición de algunos campos
+    /// comunes entre tablas.
     /// </summary>
-    public class Movimiento
+    public abstract class Identificable
     {
+        [Key] public long ID { get; set; }
         /// <summary>
-        /// Campo llave primario de este elemento.
+        /// Prefijo para generación de códigos de cuenta.
         /// </summary>
-        public long MovimientoID { get; set; }
+        public int Prefix { get; set; }
         /// <summary>
-        /// Cuenta que ha sido afectada por este movimiento.
+        /// Nombre para mostrar del elemento de la tabla.
         /// </summary>
-        public Cuenta RefCuenta { get; set; }
-        /// <summary>
-        /// Valor por el cual la cuenta ha sido afectada.
-        /// </summary>
-        public decimal Value { get; set; }
+        [Required] public string DisplayName { get; set; }
     }
 }

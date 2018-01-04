@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -10,32 +10,24 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System.Collections.Generic;
-
-namespace CoreContable.Entities
+namespace ContabServer.Models
 {
     /// <summary>
-    /// Modelo de una tabla que contiene la definición de una cuenta
-    /// específica.
+    /// Representa un movimiento o cambio a una cuenta dentro de una partida.
     /// </summary>
-    public class Cuenta : Identificable
+    public class Movimiento
     {
         /// <summary>
-        /// Valor en caché almacenado con el balance actual de la cuenta.
+        /// Campo llave primario de este elemento.
         /// </summary>
-        public decimal CachedValue { get; set; }
-
+        public long MovimientoID { get; set; }
         /// <summary>
-        /// Valor opcional que permite agrupar al elemento.
+        /// Cuenta que ha sido afectada por este movimiento.
         /// </summary>
-        public List<CuentaGroup> MemberOf { get; set; }
-
+        public Cuenta RefCuenta { get; set; }
         /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="Cuenta"/>.
+        /// Valor por el cual la cuenta ha sido afectada.
         /// </summary>
-        public Cuenta()
-        {
-            MemberOf = new List<CuentaGroup>();
-        }
+        public decimal Value { get; set; }
     }
 }

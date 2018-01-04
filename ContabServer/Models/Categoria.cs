@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2017 César Andrés Morgan
+Copyright © 2017, 2018 César Andrés Morgan
 Pendiente de licenciamiento
 ===============================================================================
 Este archivo está pensado para uso interno exclusivamente por su autor y otro
@@ -12,33 +12,29 @@ cualquier parte de su contenido.
 
 using System.Collections.Generic;
 
-namespace CoreContable.Entities
+namespace ContabServer.Models
 {
     /// <summary>
-    /// Modelo de una tabla que define un grupo que puede utilizarse para ver
-    /// un conjunto específico de cuentas.
+    /// Modelo de una tabla que contiene información sobre las diferentes
+    /// clases de cuentas.
     /// </summary>
-    public class CuentaGroup
+    public class Categoria : Identificable
     {
         /// <summary>
-        /// Campo llave principal de este elemento.
+        /// Enumera las cuentas contenidas en esta categoría.
         /// </summary>
-        public int ID { get; set; }
+        public List<Cuenta> Cuentas { get; set; }
         /// <summary>
-        /// Nombre del grupo de cuentas.
+        /// Enumera las subcategorías contenidas en esta categoría.
         /// </summary>
-        public string Name { get; set; }
+        public List<Categoria> SubCategorias { get; set; }
         /// <summary>
-        /// Lista de miembros de este grupo de cuentas.
+        /// Inicializa una nueva instancia de la clase <see cref="Categoria"/>.
         /// </summary>
-        public List<Cuenta> Members { get; set; }
-        /// <summary>
-        /// Inicializa una nueva instancia de la clase
-        /// <see cref="CuentaGroup"/>.
-        /// </summary>
-        public CuentaGroup()
+        public Categoria()
         {
-            Members = new List<Cuenta>();
+            if (Cuentas == null) Cuentas = new List<Cuenta>();
+            if (SubCategorias == null) SubCategorias = new List<Categoria>();
         }
     }
 }
