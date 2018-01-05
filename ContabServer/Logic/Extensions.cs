@@ -14,6 +14,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Collections.Generic;
 
 namespace ContabServer.Logic
 {
@@ -98,11 +99,11 @@ namespace ContabServer.Logic
         /// ejecute.
         /// </returns>
         public static async Task DoTransact(this DbContext Db, Task action)
-        {            
+        {
             var tr = Db.GetTransaction(out bool isNew);
             try
             {
-                action.Start();
+                if (action.Status == TaskStatus.Created) action.Start();
                 await action;
                 await Db.SaveChangesAsync();
                 if (isNew) tr.Commit();
@@ -117,6 +118,22 @@ namespace ContabServer.Logic
                 if (isNew) tr.Dispose();
                 tr = null;
             }
+        }
+
+        public static IEnumerable<T> FindAll<T>(this DbSet<T> dbSet, Predicate<T> predicate) where T : class
+        {
+            foreach (var j in dbSet) if (predicate(j)) yield return j;
+        }
+
+        public static bool FindAny<T>(this DbSet<T> dbSet, Predicate<T> predicate, out T entity) where T : class
+        {
+            foreach (var j in dbSet) if (predicate(j))
+                {
+                    entity = j;
+                    return true;
+                }
+            entity = null;
+            return false;
         }
     }
 }

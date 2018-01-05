@@ -36,74 +36,133 @@ namespace ContabServer.Logic
             });
         }
 
-        public static async Task AddCategoria(this ContabContext db, string nombre, Categoria parent, int prefix)
+        #region Creación de datos
+        /// <summary>
+        /// Agrega una nueva <see cref="Categoria"/> a la base de datos.
+        /// </summary>
+        /// <param name="db">
+        /// Referencia a la instancia de base de datos.
+        /// </param>
+        /// <param name="nombre">Nombre del nuevo grupo.</param>
+        /// <param name="parent">Categoría padre de este elemento.</param>
+        /// <param name="prefix">Prefijo para generar códigos de cuenta.</param>
+        /// <returns>La <see cref="Categoria"/> que ha sido creada.</returns>
+        public static async Task<Categoria> AddCategoria(this ContabContext db, string nombre, Categoria parent, int prefix)
         {
             if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
             if (parent is null) throw new ArgumentNullException(nameof(parent));
-            if (prefix < 1) throw new ArgumentOutOfRangeException(nameof(prefix));
-            await db.DoTransact(() =>
-            {
-                parent.SubCategorias.Add(new Categoria { DisplayName = nombre, Prefix = prefix });
-            });
+            if (prefix < 1) prefix = parent.SubCategorias.Count + 1;
+            var retVal = new Categoria { DisplayName = nombre, Prefix = prefix };
+            await db.DoTransact(() => parent.SubCategorias.Add(retVal));
+            return retVal;
         }
 
-        public static async Task AddCuenta(this ContabContext db, string nombre, Categoria parent, int prefix, params CuentaGroup[] memberOf)
+        /// <summary>
+        /// Agrega una nueva <see cref="Cuenta"/> a la base de datos.
+        /// </summary>
+        /// <param name="db">
+        /// Referencia a la instancia de base de datos.
+        /// </param>
+        /// <param name="nombre">Nombre del nuevo grupo.</param>
+        /// <param name="parent">Categoría padre de este elemento.</param>
+        /// <param name="prefix">Prefijo para generar códigos de cuenta.</param>
+        /// <returns>La <see cref="Cuenta"/> que ha sido creada.</returns>
+        public static async Task<Cuenta> AddCuenta(this ContabContext db, string nombre, Categoria parent, int prefix)
         {
             if (db is null) throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
             if (parent is null) throw new ArgumentNullException(nameof(parent));
             if (prefix < 1) throw new ArgumentOutOfRangeException(nameof(prefix));
+            Cuenta cuenta = new Cuenta { DisplayName = nombre, Prefix = prefix };
+            await db.DoTransact(() => parent.Cuentas.Add(cuenta));
+            return cuenta;
+        }
+
+        /// <summary>
+        /// Agrega un nuevo <see cref="CuentaGroup"/> a la base de datos.
+        /// </summary>
+        /// <param name="db">
+        /// Referencia a la instancia de base de datos.
+        /// </param>
+        /// <param name="nombre">Nombre del nuevo grupo.</param>
+        /// <returns>El <see cref="CuentaGroup"/> que ha sido creado.</returns>
+        public static async Task<CuentaGroup> AddCuentaGroup(this ContabContext db, string nombre)
+        {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
+            var cg = new CuentaGroup { DisplayName = nombre };
+            await db.DoTransact(db.CuentaGroups.AddAsync(cg));
+            return cg;
+        }
+        #endregion
+
+        #region Grupos de cuentas
+        public static async Task DeGroup(this ContabContext db, Cuenta[] cuentas, CuentaGroup[] grupos)
+        {
             await db.DoTransact(() =>
             {
-                Cuenta cuenta = new Cuenta { DisplayName = nombre, Prefix = prefix };
-                foreach (var j in memberOf)
+                foreach (var j in cuentas)
                 {
-                    db.N2N_Cuenta_CuentaGroup.Add(new Cuenta_CuentaGroup_N2N
+                    foreach (var k in grupos)
                     {
-                        CuentaID = cuenta,
-                        CuentaGroupID = j
-                    });                    
+                        if (db.N2N_Cuenta_CuentaGroup.FindAny(p => p.CuentaID.ID == j.ID && p.CuentaGroupID.ID == k.ID, out var element))
+                            db.N2N_Cuenta_CuentaGroup.Remove(element);
+                    }
                 }
-                parent.Cuentas.Add(cuenta);
             });
         }
 
-        public static async Task AddCuentaGroup(this ContabContext db, string nombre)
+        public static async Task GroupCuentas(this ContabContext db, Cuenta[] cuentas, CuentaGroup[] grupos)
         {
-            if (db is null) throw new ArgumentNullException(nameof(db));
-            if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentNullException(nameof(nombre));
             await db.DoTransact(() =>
             {
-                db.CuentaGroups.Add(new CuentaGroup { DisplayName = nombre });
-            });
-        }
-        
-        public static async Task AddPartida(this ContabContext db, string synopsys, params Movimiento[] movimientos)
-        {
-            if (db is null) throw new ArgumentNullException(nameof(db));
-            if (string.IsNullOrWhiteSpace(synopsys)) throw new ArgumentNullException(nameof(synopsys));
-            await db.DoTransact(() =>
-            {
-                Partida partida = new Partida
+                foreach (var j in cuentas)
                 {
-                    TimeStamp = DateTime.Now,
-                    Synopsys = synopsys,
-                };
-                foreach (var j in movimientos)                
-                    partida.Movimientos.Add(j);
-
-                if (!partida.IsValid) throw new ArgumentException(nameof(movimientos));
-                db.LibroDiario.Add(partida);
+                    foreach (var k in grupos)
+                    {
+                        if (!db.N2N_Cuenta_CuentaGroup.FindAny(p => p.CuentaID.ID == j.ID && p.CuentaGroupID.ID == k.ID, out _))
+                        {
+                            db.N2N_Cuenta_CuentaGroup.Add(new Cuenta_CuentaGroup_N2N
+                            {
+                                CuentaID = j ?? throw new NullReferenceException(),
+                                CuentaGroupID = k ?? throw new NullReferenceException()
+                            });
+                        }
+                    }
+                }
             });
         }
 
-        /*
+        #endregion
+
+        #region Transacciones contables
+        /* -= NOTA=-
          * En una base de datos contable, en teoría no deben existir métodos de
          * edición ni de borrado. Sin embargo, cabe la posibilidad de mover los
          * datos a una base de datos de archivado. Eventualmente, se piensa
          * implementar una instrucción especial que hará el trabajo de forma
          * totalmente automática.
          */
+
+        /// <summary>
+        /// Agrega una nueva <see cref="Partida"/> a la base de datos.
+        /// </summary>
+        /// <param name="db">
+        /// Referencia a la instancia de base de datos.
+        /// </param>
+        /// <param name="nombre">Nombre del nuevo grupo.</param>
+        /// <returns>La <see cref="Partida"/> que ha sido creada.</returns>
+        public static async Task<Partida> AddPartida(this ContabContext db, string synopsys, params Movimiento[] movimientos)
+        {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (string.IsNullOrWhiteSpace(synopsys)) throw new ArgumentNullException(nameof(synopsys));
+            Partida partida = new Partida { TimeStamp = DateTime.Now, Synopsys = synopsys };
+            foreach (var j in movimientos) partida.Movimientos.Add(j);
+            if (!partida.IsValid) throw new ArgumentException(nameof(movimientos));
+            await db.DoTransact(db.LibroDiario.AddAsync(partida));
+            return partida;
+        }
+        #endregion
     }
 }

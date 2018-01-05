@@ -80,15 +80,25 @@ namespace ContabServer.Controllers
         #endregion
 
         #region Consultas relacionales
+        [HttpGet("[action]/{id}")]
         public async Task<IEnumerable<Cuenta>> GetCuentasOfGroup(long id)
         {
             var retVal = new List<Cuenta>();
             await Task.Run(() =>
             {
                 foreach (var j in db.N2N_Cuenta_CuentaGroup)
-                {
                     if (j.CuentaGroupID.ID == id) retVal.Add(j.CuentaID);
-                }
+            });
+            return retVal;
+        }
+        [HttpGet("[action]/{id}")]
+        public async Task<IEnumerable<CuentaGroup>> GetGroupsOfCuenta(long id)
+        {
+            var retVal = new List<CuentaGroup>();
+            await Task.Run(() =>
+            {
+                foreach (var j in db.N2N_Cuenta_CuentaGroup)
+                    if (j.CuentaID.ID == id) retVal.Add(j.CuentaGroupID);
             });
             return retVal;
         }
@@ -96,29 +106,44 @@ namespace ContabServer.Controllers
 
 
 
-
-
-
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddCategoria(
-            [FromForm]string name,
-            [FromForm]long parent,
-            [FromForm]int prefix
-            )
+        public async Task<IActionResult> AddCategoria([FromForm]string name, [FromForm]long parent, [FromForm]int prefix)
         {
             try
             {
-                await Commands.AddCategoria(db, name, db.Categorias.Find(parent), prefix);
+                await db.AddCategoria(name, await db.Categorias.FindAsync(parent), prefix);
                 return new OkResult();
             }
-            catch
-            {
-                return new BadRequestResult();
-            }
+            catch { return new BadRequestResult(); }
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddCuenta([FromForm]string name, [FromForm]long parent, [FromForm]int prefix, [FromForm]long[] memberOf)
+        {
+            try
+            {
+                var c = await db.AddCuenta(name, db.Categorias.Find(parent), prefix);
+                List<CuentaGroup> lst = new List<CuentaGroup>();
+                foreach (var j in memberOf) lst.Add(await db.CuentaGroups.FindAsync(j));
+                if (lst.Any()) await db.GroupCuentas(new[] { c }, lst.ToArray());
+                return new OkResult();
+            }
+            catch { return new BadRequestResult(); }
+        }
 
-
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddCuentaGroup([FromForm]string name, [FromForm]long[] members)
+        {
+            try
+            {
+                var g = await db.AddCuentaGroup(name);
+                List<Cuenta> lst = new List<Cuenta>();
+                foreach (var j in members) lst.Add(await db.Cuentas.FindAsync(j));
+                if (lst.Any()) await db.GroupCuentas(lst.ToArray(), new[] { g });
+                return new OkResult();
+            }
+            catch { return new BadRequestResult(); }
+        }
 
 
 
