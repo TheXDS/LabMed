@@ -65,14 +65,14 @@ namespace ContabServer.Models
         /// <see cref="ContabContext"/>.
         /// </summary>
         public ContabContext()
-        {
-            Database.EnsureDeleted();
+        {            
             if (Database.EnsureCreated() || Categorias.Count() < 3) Task.WaitAll(InitialSetupAsync(this));
             Activo = Categorias.Find(1L);
             Pasivo = Categorias.Find(2L);
             Capital = Categorias.Find(3L);
         }
 
+        #region Campos auxiliares
         /// <summary>
         /// Obtiene una referencia a la categoría de cuentas del Activo.
         /// </summary>
@@ -85,7 +85,9 @@ namespace ContabServer.Models
         /// Obtiene una referencia a la categoría de cuentas del Capital.
         /// </summary>
         [NotMapped] public readonly Categoria Capital;
+        #endregion
 
+        #region Tablas de datos
         /// <summary>
         /// Tabla que contiene las diferentes agrupaciones o clases de cuentas.
         /// </summary>
@@ -106,6 +108,7 @@ namespace ContabServer.Models
         /// Tabla que contiene las definiciones de grupos de cuentas.
         /// </summary>
         public DbSet<CuentaGroup> CuentaGroups { get; set; }
+        #endregion
 
         #region Tablas relacionales
         /// <summary>
