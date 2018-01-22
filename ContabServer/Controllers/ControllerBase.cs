@@ -23,7 +23,6 @@ namespace ContabServer.Controllers
     public static class ControllerConfig
     {
         public const string DefaultRoute = "api/[controller]";
-
     }
 
     /// <summary>

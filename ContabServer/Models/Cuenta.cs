@@ -35,7 +35,7 @@ namespace ContabServer.Models
         /// </summary>
         public Cuenta()
         {
-            ///MemberOf = new List<CuentaGroup>();
+            // MemberOf = new List<CuentaGroup>();
         }
     }
 }

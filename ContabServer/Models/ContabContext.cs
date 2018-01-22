@@ -76,15 +76,15 @@ namespace ContabServer.Models
         /// <summary>
         /// Obtiene una referencia a la categoría de cuentas del Activo.
         /// </summary>
-        [NotMapped] public readonly Categoria Activo;
+        [NotMapped] public Categoria Activo { get; }
         /// <summary>
         /// Obtiene una referencia a la categoría de cuentas del Pasivo.
         /// </summary>
-        [NotMapped] public readonly Categoria Pasivo;
+        [NotMapped] public Categoria Pasivo { get; }
         /// <summary>
         /// Obtiene una referencia a la categoría de cuentas del Capital.
         /// </summary>
-        [NotMapped] public readonly Categoria Capital;
+        [NotMapped] public Categoria Capital { get; }
         #endregion
 
         #region Tablas de datos

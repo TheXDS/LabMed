@@ -10,21 +10,18 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System;
+using ContabServer.Logic;
+using ContabServer.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ContabServer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ContabServer.Logic;
 
 namespace ContabServer.Controllers
 {
     public class ContabilidadController : APIController
     {
         ContabContext db = new ContabContext();
-
 
         #region Consultas
         /// <summary>
@@ -104,8 +101,6 @@ namespace ContabServer.Controllers
         }
         #endregion
 
-
-
         [HttpPost("[action]")]
         public async Task<IActionResult> AddCategoria([FromForm]string name, [FromForm]long parent, [FromForm]int prefix)
         {
@@ -146,15 +141,10 @@ namespace ContabServer.Controllers
         }
 
 
-
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-            // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see https://go.microsoft.com/fwlink/?LinkID=717803
-        }
-
+        
+        
+        
+        
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
