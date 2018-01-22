@@ -1,14 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContabServer", "ContabServer\ContabServer.csproj", "{9AB816B5-200B-40E2-877C-0A3E9AA12911}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCliente", "AppCliente\AppCliente.csproj", "{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Local|Any CPU = Debug_Local|Any CPU
 		Debug_Npsql|Any CPU = Debug_Npsql|Any CPU
+		Debug|Any CPU = Debug|Any CPU
 		Release_Test|Any CPU = Release_Test|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
@@ -17,10 +20,22 @@ Global
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Debug_Local|Any CPU.Build.0 = Debug_Local|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Debug_Npsql|Any CPU.ActiveCfg = Debug_Npsql|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Debug_Npsql|Any CPU.Build.0 = Debug_Npsql|Any CPU
+		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Debug|Any CPU.ActiveCfg = Debug_Npsql|Any CPU
+		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Debug|Any CPU.Build.0 = Debug_Npsql|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Release_Test|Any CPU.ActiveCfg = Release_Test|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Release_Test|Any CPU.Build.0 = Release_Test|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB816B5-200B-40E2-877C-0A3E9AA12911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug_Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug_Local|Any CPU.Build.0 = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug_Npsql|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug_Npsql|Any CPU.Build.0 = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release_Test|Any CPU.ActiveCfg = Release|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release_Test|Any CPU.Build.0 = Release|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
