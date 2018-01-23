@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContabServer", "ContabServe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCliente", "AppCliente\AppCliente.csproj", "{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContabServerTests", "ContabServerTests\ContabServerTests.csproj", "{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Local|Any CPU = Debug_Local|Any CPU
@@ -36,6 +38,16 @@ Global
 		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release_Test|Any CPU.Build.0 = Release|Any CPU
 		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug_Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug_Local|Any CPU.Build.0 = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug_Npsql|Any CPU.ActiveCfg = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug_Npsql|Any CPU.Build.0 = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Release_Test|Any CPU.ActiveCfg = Release|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Release_Test|Any CPU.Build.0 = Release|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

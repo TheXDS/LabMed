@@ -13,6 +13,7 @@ cualquier parte de su contenido.
 using ContabServer.Models;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ContabServer.Logic
 {
@@ -97,6 +98,41 @@ namespace ContabServer.Logic
         }
         #endregion
 
+        public static async Task<bool> RemoveCategoria(this ContabContext db, long id)
+        {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (id <= 3) throw new ArgumentOutOfRangeException(nameof(id));
+            var cat = await db.Categorias.FindAsync(id);
+            if (cat is null) return false;
+            await db.DoTransact(() => RemCategoria(db, cat));
+            return true;
+        }
+
+        public static async Task<bool> RemoveCuenta(this ContabContext db, long id)
+        {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id));
+            var cat = await db.Cuentas.FindAsync(id);
+            if (cat is null) return false;
+            await Task.Run(() =>
+            {
+                if (db.LibroDiario.FindAny(p => p.Movimientos.Any(q => q.RefCuenta == cat), out _)) throw new InvalidOperationException();
+            });
+            await db.DoTransact(() => RemCuenta(db, cat));
+            return true;
+        }
+
+        public static async Task<bool> RemoveCuentaGroup(this ContabContext db, long id)
+        {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id));
+            var cat = await db.CuentaGroups.FindAsync(id);
+            if (cat is null) return false;
+            await db.DoTransact(() => db.CuentaGroups.Remove(cat));
+            return true;
+        }
+
+
         #region Grupos de cuentas
         public static async Task DeGroup(this ContabContext db, Cuenta[] cuentas, CuentaGroup[] grupos)
         {
@@ -162,6 +198,25 @@ namespace ContabServer.Logic
             if (!partida.IsValid) throw new ArgumentException(nameof(movimientos));
             await db.DoTransact(db.LibroDiario.AddAsync(partida));
             return partida;
+        }
+        #endregion
+
+
+        #region Atomic-Ops
+        static void RemCategoria(ContabContext db, Categoria c)
+        {
+            foreach (var j in c.SubCategorias) RemCategoria(db, j);
+            db.Categorias.Remove(c);
+        }
+        static void RemCuenta(ContabContext db, Cuenta c)
+        {
+            db.N2N_Cuenta_CuentaGroup.RemoveRange(db.N2N_Cuenta_CuentaGroup.FindAll(p => p.CuentaID == c));
+            db.Cuentas.Remove(c);
+        }
+        static void RemCuentaGroup(ContabContext db, CuentaGroup c)
+        {
+            db.N2N_Cuenta_CuentaGroup.RemoveRange(db.N2N_Cuenta_CuentaGroup.FindAll(p => p.CuentaGroupID == c));
+            db.CuentaGroups.Remove(c);
         }
         #endregion
     }

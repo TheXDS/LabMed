@@ -57,6 +57,10 @@ namespace ContabServer.Models
 #if RELEASE
             // TODO: configurar el servidor de producción
             throw new System.NotImplementedException();
+
+            const string Server = @"(localdb)\mssqllocaldb";
+            const string Database = "LabMedConta";
+            optionsBuilder.UseSqlServer($"Server={Server};Database={Database};Trusted_Connection=True;Integrated security=True;");
 #endif
         }
 

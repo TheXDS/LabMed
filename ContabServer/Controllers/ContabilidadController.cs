@@ -106,8 +106,7 @@ namespace ContabServer.Controllers
         {
             try
             {
-                await db.AddCategoria(name, await db.Categorias.FindAsync(parent), prefix);
-                return new OkResult();
+                return new JsonResult((await db.AddCategoria(name, await db.Categorias.FindAsync(parent), prefix)));
             }
             catch { return new BadRequestResult(); }
         }
@@ -139,11 +138,6 @@ namespace ContabServer.Controllers
             }
             catch { return new BadRequestResult(); }
         }
-
-
-        
-        
-        
         
         // PUT api/values/5
         [HttpPut("{id}")]
@@ -152,11 +146,31 @@ namespace ContabServer.Controllers
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see https://go.microsoft.com/fwlink/?LinkID=717803
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteCategoria(long id)
         {
-            // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see https://go.microsoft.com/fwlink/?LinkID=717803
+            try
+            {
+                if (await db.RemoveCategoria(id))
+                    return new OkResult();
+                else
+                    return null;
+            }
+            catch { return new BadRequestResult(); }
         }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteCuenta(long id)
+        {
+            try
+            {
+                if (await db.RemoveCuenta(id))
+                    return new OkResult();
+                else
+                    return null;
+            }
+            catch { return new BadRequestResult(); }
+        }
+
     }
 }
