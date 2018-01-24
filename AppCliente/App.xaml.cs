@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-namespace AppCliente
+namespace Sinergia.SLM
 {
     /// <summary>
     /// Interaction logic for App.xaml
