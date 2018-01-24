@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContabServer", "ContabServe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCliente", "AppCliente\AppCliente.csproj", "{7CB4986D-AB0F-4CC6-A4B9-109B322E5ED1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContabServerTests", "ContabServerTests\ContabServerTests.csproj", "{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContabServerTests", "ContabServerTests\ContabServerTests.csproj", "{23FF5638-9B01-44AA-8AE8-75AE53BACC1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

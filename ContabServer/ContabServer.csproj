@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Configurations>Debug_Npsql;Release;Debug_Local;Release_Test</Configurations>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <RootNamespace>Sinergia.LabMed.ContabServer</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Npsql|AnyCPU'">

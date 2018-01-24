@@ -24,6 +24,7 @@ namespace ContabServer.Controllers
         ContabContext db = new ContabContext();
 
         #region Consultas
+        // Consultas individuales
         /// <summary>
         /// Obtiene una categoría.
         /// </summary>
@@ -74,6 +75,45 @@ namespace ContabServer.Controllers
         /// </returns>
         [HttpGet("[action]/{id}")]
         public async Task<CuentaGroup> GetCuentaGroup(long id) => await db.CuentaGroups.FindAsync(id);
+
+        // Consultas de arreglo (posiblemente costosas en ancho de banda)
+        /// <summary>
+        /// Obtiene todas las categorías definidas.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpGet("[action]")]
+        public IEnumerable<Categoria> GetCategorias() => db.Categorias.AsEnumerable();
+        /// <summary>
+        /// Obtiene todas las cuentas definidas.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpGet("[action]")]
+        public IEnumerable<Cuenta> GetCuentas() => db.Cuentas.AsEnumerable();
+        /// <summary>
+        /// Obtiene todas los grupos de cuentas definidas.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpGet("[action]")]
+        public IEnumerable<CuentaGroup> GetCuentaGroups() => db.CuentaGroups.AsEnumerable();
+
+        // Propablemente inútiles, redundantes o demasiado costosas.
+        /// <summary>
+        /// Obtiene todas las partidas.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpGet("[action]/{id}")]
+        public IEnumerable<Partida> GetPartidas() => db.LibroDiario.AsEnumerable();
+        /// <summary>
+        /// Obtiene todos los movimientos.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpGet("[action]/{id}")]
+        public  IEnumerable<Movimiento> GetMovimientos() => db.Movimientos.AsEnumerable();
         #endregion
 
         #region Consultas relacionales
@@ -171,6 +211,5 @@ namespace ContabServer.Controllers
             }
             catch { return new BadRequestResult(); }
         }
-
     }
 }
