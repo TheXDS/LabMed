@@ -11,6 +11,7 @@ cualquier parte de su contenido.
 */
 
 using System.Windows;
+
 namespace Sinergia.SLM
 {
     /// <summary>

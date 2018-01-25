@@ -106,12 +106,5 @@ namespace ContabServer.Models
         public DbSet<CuentaGroup> CuentaGroups { get; set; }
         #endregion
 
-        #region Tablas relacionales
-        /// <summary>
-        /// Tabla de relación N a N entre <see cref="Cuenta"/> y
-        /// <see cref="CuentaGroup"/>.
-        /// </summary>
-        public DbSet<Cuenta_CuentaGroup_N2N> N2N_Cuenta_CuentaGroup { get; set; }
-        #endregion
     }
 }

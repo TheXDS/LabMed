@@ -7,7 +7,6 @@
     mc:Ignorable="d" 
     d:DesignHeight="300" d:DesignWidth="400"
     Title="DeveloperDiagnostics">
-
     <DockPanel>
         <TextBlock 
             DockPanel.Dock="Bottom"
@@ -23,6 +22,7 @@ SLM.
                 <Separator Margin="0,10"/>
                 <DockPanel>
                     <StackPanel
+                        Margin="10,0,0,0"
                         HorizontalAlignment="Right"
                         DockPanel.Dock="Right" Width="100">
                         <StackPanel.Resources>
@@ -31,7 +31,18 @@ SLM.
                             </Style>
                         </StackPanel.Resources>
                         <Button x:Name="btnPluginInfo" Content="Info. de plugins" Click="BtnPluginInfo_Click"/>
-                    </StackPanel>                    
+                    </StackPanel>
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="0,0,0,10"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBlock x:Name="txtModsCargados"/>
+                        <TextBlock x:Name="txtWndsAbiertas"/>
+                        <TextBlock x:Name="txtSystemLoad"/>
+
+                    </StackPanel>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>
