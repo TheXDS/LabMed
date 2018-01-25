@@ -10,8 +10,17 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System.Reflection;
+using Sinergia.SLM.Modules;
+using System.Collections.Generic;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+namespace Sinergia.SLM.Component
+{
+    /// <summary>
+    /// Expone ciertas propiedades de una ventana que cargue módulos para
+    /// permitir conectar una página inicial.
+    /// </summary>
+    internal interface IModuleExposer
+    {
+        IEnumerable<Modulo> Modulos { get; }
+    }
+}

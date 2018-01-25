@@ -10,8 +10,15 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System.Reflection;
+using System.Collections.Generic;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+namespace ContabServer.Models
+{
+    /// <summary>
+    /// Modelo de una tabla que define un grupo que puede utilizarse para ver
+    /// un conjunto específico de cuentas.
+    /// </summary>
+    public class CuentaGroup : Identificable {
+        public List<Cuenta> Members { get; set; }
+    }
+}

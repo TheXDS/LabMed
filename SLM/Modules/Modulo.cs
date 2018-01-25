@@ -10,22 +10,23 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System;
-using TheXDS.MCART.Attributes;
 using TheXDS.MCART.PluginSupport;
+using Sinergia.SLM.Component;
 
 namespace Sinergia.SLM.Modules
 {
-    [MinMCARTVersion(0, 8, 1, 2)]
-    [TargetMCARTVersion(0, 8, 1, 2)]
-    public class ConceptModule : Modulo
+    /// <summary>
+    /// Define la estructura básica de un módulo del sistema SLM.
+    /// </summary>
+    public abstract class Modulo : Plugin
     {
-        [InteractionItem]
-        [Name("Página de prueba")]
-        public void ShowTestPage(object sender, EventArgs e) => App.AddPage(new Pages.TestPage());
-
-        [InteractionItem]
-        [Name("Acerca de este plugin de prueba...")]
-        public void AboutThis(object sender, EventArgs e) => About(this);
+        /// <summary>
+        /// Expone métodos para agregar elementos a la ventana de la aplicación.
+        /// </summary>
+        protected IAvalonDockHost App { get; }
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Modulo"/>.
+        /// </summary>
+        protected Modulo() { App = MainWindow.Instance; }
     }
 }

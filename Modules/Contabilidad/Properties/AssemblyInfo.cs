@@ -12,6 +12,6 @@ cualquier parte de su contenido.
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyTitle("Contabilidad")]
+[assembly: AssemblyDescription("Módulo básico de contabilidad.")]
+[assembly: AssemblyVersion("1.0.*")]

@@ -12,6 +12,6 @@ cualquier parte de su contenido.
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyTitle("Aplicación cliente de SLM")]
+[assembly: AssemblyDescription("Aplicación cliente del sistema integral de Laboratorios Médicos de Honduras.")]
+[assembly: AssemblyVersion("0.2.*")] // TODO: Cambiar a 2.0.0.0 al hacer un Release

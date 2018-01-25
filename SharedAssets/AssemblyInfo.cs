@@ -11,7 +11,13 @@ cualquier parte de su contenido.
 */
 
 using System.Reflection;
+using System.Windows;
+using TheXDS.MCART.Attributes;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyCompany("Laboratorios Médicos de Honduras, S.A.")]
+[assembly: AssemblyProduct("SLM")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyTrademark("Grupo Sinergia, S.A. de C.V.")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
+[assembly: MinMCARTVersion(0, 8, 1, 2)]
+[assembly: TargetMCARTVersion(0, 8, 1, 2)]

@@ -10,8 +10,14 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System.Reflection;
-
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+namespace Sinergia.SLM.Component
+{
+    public interface IStatusReporter
+    {
+        void Done();
+        void Done(string text);
+        void UpdateStatus(double progress);
+        void UpdateStatus(double progress, string text);
+        void UpdateStatus(string text);
+    }
+}

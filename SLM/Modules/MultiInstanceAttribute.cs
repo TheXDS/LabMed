@@ -10,8 +10,13 @@ responsabilidad y daños causados por el uso indebido de este archivo o de
 cualquier parte de su contenido.
 */
 
-using System.Reflection;
+using System;
 
-[assembly: AssemblyTitle("ConceptModule")]
-[assembly: AssemblyDescription("Módulo conceptual, NO DISTRIBUIR CON LA APP!")]
-[assembly: AssemblyVersion("1.0.0.0")]
+namespace Sinergia.SLM.Modules
+{
+    /// <summary>
+    /// Marca una página para poder instanciarse varias veces.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class MultiInstanceAttribute : Attribute { }
+}
